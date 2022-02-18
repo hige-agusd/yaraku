@@ -13,14 +13,21 @@ class BookController extends Controller
      */
     public function index()
     {
+        $books = new Book();
+        $title = request('title');
+        $author = request('author');
+        if (isset($title)) {
+            $books = Book::where('title', $title);
+        } elseif (isset($author)) {
+            $books = Book::where('author', $author);
+        }
+
         $orderBy = request('orderBy');
         $sortDir = request('sortDir');
         if (isset($orderBy) && isset($sortDir)) {
-            $books = Book::orderBy($orderBy, $sortDir)->get();
-        } else {
-            $books = Book::all();
+            $books = $books->orderBy($orderBy, $sortDir);
         }
-        return $books;
+        return $books->get();
     }
 
     public function show($id) {
