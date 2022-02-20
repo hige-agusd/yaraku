@@ -25,3 +25,5 @@ export interface IFilter {
     author?: string;
     title?: string;
 }
+
+export type FileFormat = 'csv' | 'xml';

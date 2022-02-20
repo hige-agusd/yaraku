@@ -18,7 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/books', 'BookController@index');
-Route::get('/books/find', 'BookController@find');
+Route::get('/books/download', 'BookController@exportBooks');
 Route::get('/books/{id}', 'BookController@show');
 Route::post('/books', 'BookController@store');
 Route::patch('/books/{id}', 'BookController@edit');

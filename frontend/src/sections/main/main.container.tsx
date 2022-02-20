@@ -6,10 +6,12 @@ const MainContainer: FC = () => {
   const {
     loading,
     books,
+    book,
     getBooks,
-    addBook,
-    editBook,
+    getBookById,
+    saveBook,
     deleteBook,
+    exportBooks,
     setFilterBy,
     setSortBy,
     error,
@@ -22,14 +24,16 @@ const MainContainer: FC = () => {
       loading={loading}
       books={books}
       getBooks={getBooks}
-      addBook={addBook}
-      editBook={editBook}
+      getBookById={getBookById}
+      saveBook={saveBook}
       deleteBook={deleteBook}
+      exportBooks={exportBooks}
       error={error}
       setFilterBy={setFilterBy}
       setSortBy={setSortBy}
       modalVisible={modalVisible}
       setModalVisible={setModalVisible}
+      book={book}
     />
   );
 };

@@ -1,12 +1,15 @@
 import Modal from "antd/lib/modal/Modal";
 import { FC } from "react";
+import { IBook } from "../../types/types";
+import BookForm from "../book-form/book-form";
 
 interface IBookModal {
   modalVisible: boolean;
   title: string;
   loading: boolean;
-  setModalVisible: Function;
-  handleSubmit: Function;
+  closeModal: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  handleSubmit: (book: IBook) => void;
+  book?: IBook;
 }
 
 const BookModal: FC<IBookModal> = ({
@@ -14,24 +17,20 @@ const BookModal: FC<IBookModal> = ({
   title,
   handleSubmit,
   loading,
-  setModalVisible,
+  closeModal,
+  book,
 }) => {
-  const handleCancel = () => setModalVisible(false);
-
-  const onOk = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-      e.preventDefault();
-      handleSubmit(e);
-  };
 
   return (
     <Modal
       visible={modalVisible}
       confirmLoading={loading}
       title={title}
-      onOk={onOk}
-      onCancel={handleCancel}
+      onCancel={closeModal}
+      getContainer={() => document.getElementById('main-view') as HTMLElement}
+      footer={null}
     >
-      Form
+      <BookForm book={book} onSubmit={handleSubmit} />
     </Modal>
   );
 };

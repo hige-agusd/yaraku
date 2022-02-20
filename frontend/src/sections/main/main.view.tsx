@@ -1,6 +1,7 @@
 import { Button } from "antd";
 import { FC } from "react";
 import { IUseBookReturn } from "../../hooks/useBooks";
+import { IBook } from "../../types/types";
 import BookModal from "../book-modal/book-modal";
 import BooksTableView from "../books-table/books-table.view";
 
@@ -12,10 +13,12 @@ interface IMainView extends IUseBookReturn {
 const MainView: FC<IMainView> = ({
   loading,
   getBooks,
-  addBook,
-  editBook,
+  getBookById,
+  saveBook,
   deleteBook,
+  exportBooks,
   books,
+  book,
   error,
   setSortBy,
   setFilterBy,
@@ -23,12 +26,28 @@ const MainView: FC<IMainView> = ({
   setModalVisible,
 }) => {
   if (error) return <div>Error: {error}</div>;
+
+  const addOrEdit = async (id?: number) => {
+      await getBookById(id);
+      setModalVisible(true);
+  }
+
+  const closeModal = () => setModalVisible(false);
+
+  const handleSubmit = (book: IBook) => {
+    saveBook(book);
+    closeModal();
+  }
+
   return (
-    <div>
-      <nav><Button onClick={() => setModalVisible(true)} type="primary">Add Book</Button></nav>
+    <div id="main-view">
+      <nav>
+        <Button onClick={() => addOrEdit()} type="primary">Add Book</Button>
+        <Button onClick={() => exportBooks('csv')} type="primary">Export</Button>
+      </nav>
       <BooksTableView
         books={books}
-        editBook={editBook}
+        onEditBook={addOrEdit}
         deleteBook={deleteBook}
         loading={loading}
         setSortBy={setSortBy}
@@ -37,9 +56,10 @@ const MainView: FC<IMainView> = ({
       <BookModal
         loading={loading}
         modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        handleSubmit={() => {}}
-        title="Title"
+        closeModal={closeModal}
+        handleSubmit={handleSubmit}
+        book={book}
+        title={`${!!book?.id ? 'Edit' : 'Add'} Book`}
       />
     </div>
   );
