@@ -2,6 +2,7 @@ import { Button } from "antd";
 import { FC } from "react";
 import { IUseBookReturn } from "../../hooks/useBooks";
 import { IBook } from "../../types/types";
+import BookExportButton from "../book-export-button/book-export-button";
 import BookModal from "../book-modal/book-modal";
 import BooksTableView from "../books-table/books-table.view";
 
@@ -12,7 +13,7 @@ interface IMainView extends IUseBookReturn {
 
 const MainView: FC<IMainView> = ({
   loading,
-  getBooks,
+  loadingFile,
   getBookById,
   saveBook,
   deleteBook,
@@ -43,7 +44,7 @@ const MainView: FC<IMainView> = ({
     <div id="main-view">
       <nav>
         <Button onClick={() => addOrEdit()} type="primary">Add Book</Button>
-        <Button onClick={() => exportBooks('csv')} type="primary">Export</Button>
+        <BookExportButton loading={loadingFile} exportBooks={exportBooks} />
       </nav>
       <BooksTableView
         books={books}
