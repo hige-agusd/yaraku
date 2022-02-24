@@ -17,10 +17,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+dd(App::environment());
 Route::get('/books', 'BookController@index');
+Route::get('/books/{id}', 'BookController@show')->where('id', '[0-9]+');
 Route::get('/books/download', 'BookController@exportBooks');
-Route::get('/books/{id}', 'BookController@show');
 Route::post('/books', 'BookController@store');
-Route::patch('/books/{id}', 'BookController@edit');
-Route::delete('/books/{id}', 'BookController@destroy');
+Route::delete('/books/{id}', 'BookController@destroy')->where('id', '[0-9]+');
 

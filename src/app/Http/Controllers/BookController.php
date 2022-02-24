@@ -33,19 +33,21 @@ class BookController extends Controller
 
     public function show($id)
     {
-        // $book = Book::where('id', $id)->get();
         $book = Book::findOrFail($id);
         return $book;
     }
 
-    public function store()
+    public function store(Request $request)
     {
+        $validated = $request->validate([
+            'title' => 'required|string',
+            'author' => 'required|string',
+            'id' => 'nullable|numeric'
+        ]);
+        $id = request(('id'));
         $book = new Book();
-        $title = request('title');
-        $author = request('author');
-        $id = request('id');
-        $book->updateOrInsert(['id' => $id], ['title' => $title, 'author' => $author]);
-        return $book;
+        $book->updateOrInsert(['id' => $id], ['title' => $validated['title'], 'author' => $validated['author']]);
+        return $validated;
     }
 
     public function destroy($id)
@@ -71,7 +73,6 @@ class BookController extends Controller
             "Expires"             => "0"
         );
 
-        
         $callback = ($format == 'xml') ? exportXml($books, $column) : exportCsv($books, $column);
 
         return response()->stream($callback, 200, $headers);
