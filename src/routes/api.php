@@ -17,7 +17,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-dd(App::environment());
 Route::get('/books', 'BookController@index');
 Route::get('/books/{id}', 'BookController@show')->where('id', '[0-9]+');
 Route::get('/books/download', 'BookController@exportBooks');
