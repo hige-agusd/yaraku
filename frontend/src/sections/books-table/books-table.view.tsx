@@ -3,6 +3,8 @@ import { FC } from "react";
 import { IBook } from "../../types/types";
 import { getColumns } from "./books-table.utils";
 
+import "./books-table.css";
+
 interface IBooksTableViewProps {
     books: IBook[];
     onEditBook: Function;
@@ -17,7 +19,7 @@ const BooksTableView: FC<IBooksTableViewProps> = ({books, onEditBook, deleteBook
         if (extra.action === 'sort') setSortBy({orderBy: sorter.columnKey, sortDir: sorter.order});
     }
     const columns = getColumns(onEditBook, deleteBook, setFilterBy);
-    return <Table dataSource={books} columns={columns} loading={loading} rowKey={(row) => row.id} onChange={handleChange}  />
+    return <Table className="BooksTable" dataSource={books} columns={columns} loading={loading} rowKey={(row) => row.id} onChange={handleChange}  />
 }
 
 export default BooksTableView;

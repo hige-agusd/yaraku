@@ -1,0 +1,19 @@
+.MainView .NavBar {
+    align-content: center;
+    background-color: azure;
+    border-bottom: .25rem solid #222;
+    display: flex;
+    height: 3rem;
+    justify-content: flex-end;
+}
+
+.MainView .NavBar .NavBar-buttonsWrapper {
+    align-content: center;
+    display: flex;
+    margin-right: 1rem;
+}
+
+.MainView .NavBar .NavBar-buttonsWrapper > * {
+    margin-top: auto;
+    margin-bottom: auto;
+}

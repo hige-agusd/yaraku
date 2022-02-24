@@ -6,11 +6,10 @@ import { cloneElement, FC, ReactElement } from "react";
 import { FileFormat, TColumns } from "../../types/types";
 
 interface IBookExportButton {
-    loading: boolean;
     exportBooks: (fileFormat: FileFormat, column?: TColumns) => void;
 }
 
-const BookExportButton: FC<IBookExportButton> = ({loading, exportBooks}) => {
+const BookExportButton: FC<IBookExportButton> = ({exportBooks}) => {
   const menu = (
     <Menu>
       <SubMenu title="to CSV">
@@ -31,10 +30,10 @@ const BookExportButton: FC<IBookExportButton> = ({loading, exportBooks}) => {
       overlay={menu}
       onClick={() => exportBooks('csv')}
       buttonsRender={([leftButton, rightButton]) => [
-        <Tooltip title="Default: Everything to csv" key="leftButton">
+        <Tooltip title="Default: Everything to CSV" key="leftButton">
           {leftButton}
         </Tooltip>,
-        cloneElement(rightButton as ReactElement, { loading }),
+        cloneElement(rightButton as ReactElement),
       ]}
     >
       Export Books

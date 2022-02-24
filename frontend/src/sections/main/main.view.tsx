@@ -6,6 +6,8 @@ import BookExportButton from "../book-export-button/book-export-button";
 import BookModal from "../book-modal/book-modal";
 import BooksTableView from "../books-table/books-table.view";
 
+import './main.css';
+
 interface IMainView extends IUseBookReturn {
   setModalVisible: Function;
   modalVisible: boolean;
@@ -13,7 +15,6 @@ interface IMainView extends IUseBookReturn {
 
 const MainView: FC<IMainView> = ({
   loading,
-  loadingFile,
   getBookById,
   saveBook,
   deleteBook,
@@ -41,10 +42,12 @@ const MainView: FC<IMainView> = ({
   }
 
   return (
-    <div id="main-view">
-      <nav>
-        <Button onClick={() => addOrEdit()} type="primary">Add Book</Button>
-        <BookExportButton loading={loadingFile} exportBooks={exportBooks} />
+    <div id="main-view" className="MainView">
+      <nav className="NavBar" >
+        <div className="NavBar-buttonsWrapper">
+          <Button onClick={() => addOrEdit()} type="primary">Add Book</Button>
+          <BookExportButton exportBooks={exportBooks} />
+        </div>
       </nav>
       <BooksTableView
         books={books}

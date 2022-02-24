@@ -3,6 +3,7 @@ import Input from "antd/lib/input/Input";
 import Space from "antd/lib/space";
 import { FilterDropdownProps, Key } from "antd/lib/table/interface";
 import { ColumnsType } from "antd/lib/table/Table";
+import Icon from "../../components/icon/icon";
 import { IBook, TColumns } from "../../types/types";
 
 // const sortDirections = ['asc', 'desc'];
@@ -108,10 +109,10 @@ export const getColumns = (editBook: Function, deleteBook: Function, setFilterBy
       title: 'Actions',
       key: 'action',
       render: (_: any, row: IBook) => (
-        <>
-          <p onClick={() => editBook(row.id)}>Edit</p>
-          <p onClick={() => deleteBook(row.id)}>Delete</p>
-        </>
+        <div className="BooksTable-actionsWrapper">
+          <span onClick={() => editBook(row.id)}><Icon type="faPencil" /></span>
+          <span onClick={() => deleteBook(row.id)}><Icon type="faTrash" /></span>
+        </div>
       ) 
     }
   ] as ColumnsType<IBook>

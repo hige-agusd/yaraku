@@ -1,0 +1,22 @@
+.BooksTable {
+    margin-top: 3rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+}
+
+.BooksTable .BooksTable-actionsWrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 3rem;
+}
+
+.BooksTable .BooksTable-actionsWrapper span {
+    margin-right: 0rem;
+    color: #bfbfbf;
+}
+
+.BooksTable .BooksTable-actionsWrapper span:hover {
+    color: #818181;
+    cursor: pointer;
+}

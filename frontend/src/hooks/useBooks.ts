@@ -14,7 +14,6 @@ const baseUrl = "http://localhost/api/books";
 
 export interface IUseBookReturn {
   loading: boolean;
-  loadingFile: boolean;
   getBooks: () => void;
   getBookById: (id?: number) => void;
   saveBook: (book: IBook) => void;
@@ -31,7 +30,6 @@ const UseBooks = (): IUseBookReturn => {
   const [book, setBook] = useState<IBook>();
   const [error, setError] = useState<IError | null>(null);
   const [loading, setLoading] = useState(false);
-  const [loadingFile, setLoadingFile] = useState(false);
   const [filterBy, setFilterBy] = useState<IFilter | null>(null);
   const [sortBy, setSortBy] = useState<ISortTable | null>(null);
 
@@ -107,7 +105,6 @@ const UseBooks = (): IUseBookReturn => {
 
   return {
     loading,
-    loadingFile,
     getBooks,
     getBookById,
     saveBook,

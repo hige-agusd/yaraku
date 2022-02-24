@@ -5,7 +5,6 @@ import MainView from "./main.view";
 const MainContainer: FC = () => {
   const {
     loading,
-    loadingFile,
     books,
     book,
     getBooks,
@@ -23,7 +22,6 @@ const MainContainer: FC = () => {
   return (
     <MainView
       loading={loading}
-      loadingFile={loadingFile}
       books={books}
       getBooks={getBooks}
       getBookById={getBookById}
