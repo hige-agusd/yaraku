@@ -98,34 +98,39 @@ class BookTest extends TestCase
     }
     public function testExportCsv()
     {
-        $books = [
-            (object)['title' => 'book 1', 'author' => 'author 1'],
-            (object)['title' => 'book 2', 'author' => 'author 2'],
-        ];
-        $callback = exportCsv($books, 'author');
-        $asd = $callback();
-        // dd(typeOf($asd));
-        // $this->assertStringContainsString('author', $asd);
-        // $this->assertStringContainsString('author 1', $asd);
-        // $this->assertStringContainsString('author 2', $asd);
-        // $this->assertStringNotContainsString('title', $asd);
+        factory(Book::class)->create(['title' => 'book 1', 'author' => 'author 1']);
+        factory(Book::class)->create(['title' => 'book 2', 'author' => 'author 2']);
+        $response = $this->get('/api/books/download');
+        $response->assertHeader('Content-Disposition', 'attachment; filename=books.csv');
+        $content = $response->streamedContent();
+        $this->assertStringContainsString('author', $content);
+        $this->assertStringContainsString('author 1', $content);
+        $this->assertStringContainsString('author 2', $content);
+        $this->assertStringContainsString('title', $content);
+        $this->assertStringContainsString('book 1', $content);
+        $this->assertStringContainsString('book 2', $content);
+    }
+    public function testExportCsvOnlyAuthor()
+    {
+        factory(Book::class)->create(['title' => 'book 1', 'author' => 'author 1']);
+        factory(Book::class)->create(['title' => 'book 2', 'author' => 'author 2']);
+        $response = $this->get('/api/books/download?column=author');
+        $response->assertHeader('Content-Disposition', 'attachment; filename=books - author.csv');
+        $content = $response->streamedContent();
+        $this->assertStringContainsString('author', $content);
+        $this->assertStringContainsString('author 1', $content);
+        $this->assertStringContainsString('author 2', $content);
+        $this->assertStringNotContainsString('title', $content);
+        $this->assertStringNotContainsString('book 1', $content);
+        $this->assertStringNotContainsString('book 2', $content);
     }
     public function testExportXml()
     {
-        $books = [
-            (object)['title' => 'book 1', 'author' => 'author 1'],
-            (object)['title' => 'book 2', 'author' => 'author 2'],
-        ];
-        $callback = exportXml($books, 'author');
-        $asd = $callback();
-        $matcherAuthor = array('tag' => 'AUTHOR');
-        $matcherTitle = array('tag' => 'TITLE');
-        // $this->assertTag($matcherAuthor, $asd);
-        // $this->assertNotTag($matcherTitle, $asd);
-        // Assert::tag('AUTHOR', $asd);
-        // $this->assertStringContainsString('author 2', $asd);
-        // $this->assertStringNotContainsString('title', $asd);
-
-        // dd($asd);
+        factory(Book::class)->create(['title' => 'book 1', 'author' => 'author 1']);
+        factory(Book::class)->create(['title' => 'book 2', 'author' => 'author 2']);
+        $response = $this->get('/api/books/download?column=author&format=xml');
+        $content = $response->streamedContent();
+        $this->assertStringContainsString('<AUTHOR>author 1</AUTHOR>', $content);
+        $this->assertStringNotContainsString('<TITLE>title 1</TITLE>', $content);
     }
 }
