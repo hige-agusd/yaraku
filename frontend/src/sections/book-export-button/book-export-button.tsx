@@ -4,37 +4,24 @@ import SubMenu from "antd/lib/menu/SubMenu";
 import Tooltip from "antd/lib/tooltip";
 import { cloneElement, FC, ReactElement } from "react";
 import { FileFormat, TColumns } from "../../types/types";
+import BookExportButtonSubMenu from "./book-export-button.submenu";
+import { buttonsWithTooltip } from "./book-export.utils";
 
 interface IBookExportButton {
     exportBooks: (fileFormat: FileFormat, column?: TColumns) => void;
 }
 
 const BookExportButton: FC<IBookExportButton> = ({exportBooks}) => {
-  const menu = (
-    <Menu>
-      <SubMenu title="to CSV">
-        <Menu.Item onClick={() => exportBooks('csv', 'title')}>Titles</Menu.Item>
-        <Menu.Item onClick={() => exportBooks('csv', 'author')}>Author</Menu.Item>
-        <Menu.Item onClick={() => exportBooks('csv')}>Both</Menu.Item>
-      </SubMenu>
-      <SubMenu title="to XML">
-        <Menu.Item onClick={() => exportBooks('xml', 'title')}>Title</Menu.Item>
-        <Menu.Item onClick={() => exportBooks('xml', 'author')}>Author</Menu.Item>
-        <Menu.Item onClick={() => exportBooks('xml')}>Both</Menu.Item>
-      </SubMenu>
-    </Menu>
-  );
+  
+  const menu = <BookExportButtonSubMenu exportBooks={exportBooks} />
 
   return (
     <Dropdown.Button
+      data-test-id="d-btn"
       overlay={menu}
+      forceRender
       onClick={() => exportBooks('csv')}
-      buttonsRender={([leftButton, rightButton]) => [
-        <Tooltip title="Default: Everything to CSV" key="leftButton">
-          {leftButton}
-        </Tooltip>,
-        cloneElement(rightButton as ReactElement),
-      ]}
+      buttonsRender={buttonsWithTooltip}
     >
       Export Books
     </Dropdown.Button>

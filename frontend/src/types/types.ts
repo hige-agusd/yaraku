@@ -1,3 +1,5 @@
+import { FilterValue, SorterResult, TableCurrentDataSource, TablePaginationConfig } from "antd/lib/table/interface";
+
 export interface IBook {
     id: number;
     title: string;
@@ -27,3 +29,8 @@ export interface IFilter {
 }
 
 export type FileFormat = 'csv' | 'xml';
+
+export type PaginatorType = TablePaginationConfig;
+export type FilterType = Record<string, FilterValue | null>;
+export type SorterType = SorterResult<IBook> | SorterResult<IBook>[];
+export type ExtraType = TableCurrentDataSource<IBook>;
