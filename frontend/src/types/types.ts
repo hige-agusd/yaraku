@@ -1,16 +1,19 @@
 import { FilterValue, SorterResult, TableCurrentDataSource, TablePaginationConfig } from "antd/lib/table/interface";
 
-export interface IBook {
-    id: number;
+export interface IBookFormValues {
     title: string;
     author: string;
 }
 
-export type TColumns = 'title' | 'author';
-export interface IError {
-    status: number;
-    msg: string;
+export interface IBook extends IBookFormValues {
+    id?: number;
 }
+
+export interface IBookRecord extends IBookFormValues {
+    id: number;
+}
+
+export type TColumns = 'title' | 'author';
 
 export type TSortDirTable = 'ascend' | 'descend';
 export interface ISort {
@@ -28,9 +31,15 @@ export interface IFilter {
     title?: string;
 }
 
+export type FilterFunction = (param: IFilter | null) => void;
+export type SortFunction = (param: ISortTable) => void;
+export type DeleteFunction = (param: number) => void;
+export type EditFunction = (param: number) => void;
+
+
 export type FileFormat = 'csv' | 'xml';
 
 export type PaginatorType = TablePaginationConfig;
 export type FilterType = Record<string, FilterValue | null>;
-export type SorterType = SorterResult<IBook> | SorterResult<IBook>[];
-export type ExtraType = TableCurrentDataSource<IBook>;
+export type SorterType = SorterResult<IBookRecord> | SorterResult<IBookRecord>[];
+export type ExtraType = TableCurrentDataSource<IBookRecord>;

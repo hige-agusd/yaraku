@@ -1,8 +1,5 @@
 import Dropdown from "antd/lib/dropdown/dropdown";
-import Menu from "antd/lib/menu";
-import SubMenu from "antd/lib/menu/SubMenu";
-import Tooltip from "antd/lib/tooltip";
-import { cloneElement, FC, ReactElement } from "react";
+import { FC } from "react";
 import { FileFormat, TColumns } from "../../types/types";
 import BookExportButtonSubMenu from "./book-export-button.submenu";
 import { buttonsWithTooltip } from "./book-export.utils";
@@ -19,7 +16,6 @@ const BookExportButton: FC<IBookExportButton> = ({exportBooks}) => {
     <Dropdown.Button
       data-test-id="d-btn"
       overlay={menu}
-      forceRender
       onClick={() => exportBooks('csv')}
       buttonsRender={buttonsWithTooltip}
     >

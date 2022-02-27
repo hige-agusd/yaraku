@@ -1,10 +1,13 @@
 import './App.css';
+import ErrorBoundary from './components/error-boundary/error-boundary';
 import MainContainer from './sections/main/main.container';
 
 function App() {
   return (
     <div className="App">
-      <MainContainer />
+      <ErrorBoundary>
+        <MainContainer />
+      </ErrorBoundary>
     </div>
   );
 }

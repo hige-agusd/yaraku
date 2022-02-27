@@ -1,3 +1,4 @@
+import { FormInstance } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import { FC } from "react";
 import { IBook } from "../../types/types";
@@ -10,6 +11,7 @@ interface IBookModal {
   closeModal: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   handleSubmit: (book: IBook) => void;
   book?: IBook;
+  form: FormInstance;
 }
 
 const BookModal: FC<IBookModal> = ({
@@ -18,6 +20,7 @@ const BookModal: FC<IBookModal> = ({
   handleSubmit,
   closeModal,
   book,
+  form,
 }) => {
 
   return (
@@ -25,10 +28,13 @@ const BookModal: FC<IBookModal> = ({
       visible={modalVisible}
       title={title}
       onCancel={closeModal}
+      destroyOnClose
       footer={null}
-      forceRender
+      forceRender={true}
+      transitionName=""
+      maskTransitionName=""
     >
-      <BookFormContainer book={book} onSubmit={handleSubmit} />
+      <BookFormContainer book={book} onSubmit={handleSubmit} form={form} />
     </Modal>
   );
 };

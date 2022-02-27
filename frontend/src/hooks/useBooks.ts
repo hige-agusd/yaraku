@@ -2,8 +2,9 @@ import qs from "qs";
 import { useCallback, useEffect, useState } from "react";
 import {
   FileFormat,
+  FilterFunction,
   IBook,
-  IError,
+  IBookRecord,
   IFilter,
   ISortTable,
   TColumns,
@@ -19,16 +20,17 @@ export interface IUseBookReturn {
   saveBook: (book: IBook) => void;
   deleteBook: (id: number) => void;
   exportBooks: (fileFormat: FileFormat, column?: TColumns) => void;
-  setFilterBy: Function;
-  setSortBy: Function;
-  books: IBook[];
+  setFilterBy: FilterFunction;
+  setSortBy: (sort: ISortTable) => void;
+  books: IBookRecord[];
   book?: IBook;
-  error: IError | null;
+  error: Error | null;
 }
+
 const UseBooks = (): IUseBookReturn => {
-  const [books, setBooks] = useState<IBook[]>([]);
+  const [books, setBooks] = useState<IBookRecord[]>([]);
   const [book, setBook] = useState<IBook>();
-  const [error, setError] = useState<IError | null>(null);
+  const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(false);
   const [filterBy, setFilterBy] = useState<IFilter | null>(null);
   const [sortBy, setSortBy] = useState<ISortTable | null>(null);
@@ -43,7 +45,7 @@ const UseBooks = (): IUseBookReturn => {
       });
       setBooks(await response.json());
     } catch (err) {
-      setError(err as any);
+      setError(err as Error);
     } finally {
       setLoading(false);
     }
@@ -58,7 +60,7 @@ const UseBooks = (): IUseBookReturn => {
       const book = await response.json();
       setBook(book);
     } catch (err) {
-      setError(err as any);
+      setError(err as Error);
     } finally {
       setLoading(false);
     }
@@ -75,7 +77,7 @@ const UseBooks = (): IUseBookReturn => {
         body: JSON.stringify(book),
       });
     } catch (err) {
-      setError(err as any);
+      setError(err as Error);
     } finally {
       setLoading(false);
       getBooks();
@@ -87,7 +89,7 @@ const UseBooks = (): IUseBookReturn => {
       setLoading(true);
       await fetch(`${baseUrl}/${id}`, { method: "DELETE" });
     } catch (err) {
-      setError(err as any);
+      setError(err as Error);
     } finally {
       setLoading(false);
       getBooks();

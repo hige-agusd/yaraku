@@ -4,18 +4,14 @@ import Space from "antd/lib/space";
 import { FilterDropdownProps, Key } from "antd/lib/table/interface";
 import { ColumnsType } from "antd/lib/table/Table";
 import Icon from "../../components/icon/icon";
-import { IBook, TColumns } from "../../types/types";
+import { IBookRecord, FilterFunction, TColumns, EditFunction, DeleteFunction } from "../../types/types";
 
-// const sortDirections = ['asc', 'desc'];
-// let searchInput;
+export const rowKeyGetter=(row: IBookRecord) => row.id;
 
-const getColumnSearchProps = (dataIndex: TColumns, setFilterBy: Function) => ({
+const getColumnSearchProps = (dataIndex: TColumns, setFilterBy: FilterFunction) => ({
   filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: FilterDropdownProps) => (
     <div style={{ padding: 8 }}>
       <Input
-        /* ref={node => {
-          searchInput = node;
-        }} */
         placeholder={`Search ${dataIndex}`}
         value={selectedKeys[0]}
         onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
@@ -51,45 +47,21 @@ const getColumnSearchProps = (dataIndex: TColumns, setFilterBy: Function) => ({
       </Space>
     </div>
   ),
-  // filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-  /* onFilter: (value: string, record: IBook) =>
-    record[dataIndex]
-      ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-      : '',
-   */
-  /* onFilterDropdownVisibleChange: (visible: boolean) => {
-    if (visible) {
-      setTimeout(() => searchInput.select(), 100);
-    }
-  }, */
-  /* render: text =>
-    this.state.searchedColumn === dataIndex ? (
-      <Highlighter
-        highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-        searchWords={[this.state.searchText]}
-        autoEscape
-        textToHighlight={text ? text.toString() : ''}
-      />
-    ) : (
-      text
-    ), */
 });
 
-const handleSearch = (setFilterBy: Function, selectedKeys: Key[], confirm: Function, dataIndex: TColumns) => {
+const handleSearch = (setFilterBy: FilterFunction, selectedKeys: Key[], confirm: Function, dataIndex: TColumns) => {
   confirm();
   setFilterBy({
     [dataIndex]: selectedKeys[0],
-    // searchText: selectedKeys[0],
-    // searchedColumn: dataIndex,
   });
 };
 
-const handleReset = (setFilterBy: Function, clearFilters: (() => void) | undefined) => {
+const handleReset = (setFilterBy: FilterFunction, clearFilters: (() => void) | undefined) => {
   clearFilters?.();
   setFilterBy(null);
 };
 
-export const getColumns = (editBook: Function, deleteBook: Function, setFilterBy: Function) => (
+export const getColumns = (editBook: EditFunction, deleteBook: DeleteFunction, setFilterBy: FilterFunction) => (
   [
     {
       title: 'Title',
@@ -108,13 +80,13 @@ export const getColumns = (editBook: Function, deleteBook: Function, setFilterBy
     {
       title: 'Actions',
       key: 'action',
-      render: (_: any, row: IBook) => (
+      render: (_: string, row: IBookRecord) => (
         <div className="BooksTable-actionsWrapper">
           <span onClick={() => editBook(row.id)}><Icon type="faPencil" /></span>
           <span onClick={() => deleteBook(row.id)}><Icon type="faTrash" /></span>
         </div>
       ) 
     }
-  ] as ColumnsType<IBook>
+  ] as ColumnsType<IBookRecord>
 )
   

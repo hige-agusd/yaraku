@@ -1,4 +1,5 @@
 import { Button } from "antd";
+import { useForm } from "antd/lib/form/Form";
 import { FC } from "react";
 import { IUseBookReturn } from "../../hooks/useBooks";
 import { IBook } from "../../types/types";
@@ -9,7 +10,7 @@ import BooksTableView from "../books-table/books-table.view";
 import './main.css';
 
 interface IMainView extends IUseBookReturn {
-  setModalVisible: Function;
+  setModalVisible: (visible: boolean) => void;
   modalVisible: boolean;
 }
 
@@ -27,6 +28,9 @@ const MainView: FC<IMainView> = ({
   modalVisible,
   setModalVisible,
 }) => {
+
+  const [form] = useForm();
+
   if (error) return <div>Error: {error}</div>;
 
   const addOrEdit = async (id?: number) => {
@@ -62,6 +66,7 @@ const MainView: FC<IMainView> = ({
         modalVisible={modalVisible}
         closeModal={closeModal}
         handleSubmit={handleSubmit}
+        form={form}
         book={book}
         title={`${!!book?.id ? 'Edit' : 'Add'} Book`}
       />
