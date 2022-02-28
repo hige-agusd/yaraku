@@ -1,4 +1,4 @@
-import { FilterValue, SorterResult, TableCurrentDataSource, TablePaginationConfig } from "antd/lib/table/interface";
+import { FilterConfirmProps, FilterValue, SorterResult, TableCurrentDataSource, TablePaginationConfig } from "antd/lib/table/interface";
 
 export interface IBookFormValues {
     title: string;
@@ -31,10 +31,11 @@ export interface IFilter {
     title?: string;
 }
 
-export type FilterFunction = (param: IFilter | null) => void;
-export type SortFunction = (param: ISortTable) => void;
-export type DeleteFunction = (param: number) => void;
-export type EditFunction = (param: number) => void;
+export type FilterFn = (param: IFilter | null) => void;
+export type SortFn = (param: ISortTable) => void;
+export type DeleteFn = (param: number) => void;
+export type EditFn = (param: number) => void;
+export type ConfirmFn = (param?: FilterConfirmProps) => void;
 
 
 export type FileFormat = 'csv' | 'xml';

@@ -23,10 +23,22 @@
     "typescript": "^4.5.5",
     "web-vitals": "^2.1.4"
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!<rootDir>/node_modules/",
+      "!<rootDir>/public/",
+      "!<rootDir>/coverage/",
+      "!<rootDir>/src/index.tsx",
+      "!<rootDir>/src/reportWebVitals.ts", 
+      "!<rootDir>/src/types/*"
+    ]
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --watchAll=false",
+    "test:w": "react-scripts test",
     "test:cvg": "react-scripts test --watchAll=false --coverage",
     "test:w:cvg": "react-scripts test --coverage",
     "eject": "react-scripts eject"
@@ -53,6 +65,7 @@
     "@babel/plugin-syntax-jsx": "^7.16.7",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
+    "@testing-library/react-hooks": "^7.0.2",
     "@types/enzyme": "^3.10.11",
     "@types/jest": "^27.4.1",
     "enzyme": "^3.11.0",

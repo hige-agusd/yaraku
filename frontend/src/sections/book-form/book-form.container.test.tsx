@@ -2,9 +2,10 @@ import { FormInstance } from "antd";
 import { shallow } from "enzyme";
 import { books } from "../../mocks/books";
 import BookFormContainer from "./book-form.container";
+import BookFormView from "./book-form.view";
 
 const mockForm = {
-  setFieldsValue: jest.fn(),
+  resetFields: jest.fn(),
 }
 
 const bookFormContainerProps = {
@@ -23,5 +24,12 @@ const bookFormContainerProps = {
     it("should render the Book Form Container without book", () => {
         const component = shallow(<BookFormContainer {...bookFormContainerProps} book={undefined} />);
         expect(component).toHaveLength(1);
-      });  
+    });
+    
+    it('should call resetFields', () => {
+      const component = shallow(<BookFormContainer {...bookFormContainerProps} />);
+      const { onReset } = component.find(BookFormView).props();
+      onReset?.();
+      expect(mockForm.resetFields).toHaveBeenCalled();
+    })
 });

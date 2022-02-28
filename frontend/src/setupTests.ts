@@ -10,6 +10,7 @@ Enzyme.configure({ adapter: new Adapter() });
 
 const config = {
     verbose: true,
+    coveragePathIgnorePatterns: ['coverage/', '<rootDir>/src/index.tsx', 'src/reportWebVitals.ts', '<rootDir>/src/types/*'],
     moduleNameMapper: {
       '\\.(css|less)$': '<rootDir>/test/jest/__mocks__/styleMock.js',
     },

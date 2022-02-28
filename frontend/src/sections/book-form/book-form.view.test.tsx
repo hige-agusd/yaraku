@@ -4,10 +4,29 @@ import React from "react";
 import { books } from "../../mocks/books";
 import BookFormView from "./book-form.view";
 
+jest.mock('react', () => {
+  const actualReact = jest.requireActual('react');
+
+  const mockEffect = (cb: Function, deps: any[]) => {
+    cb();
+  };
+
+  return {
+    __esModule: true,
+    default: actualReact,
+    ...actualReact,
+    useEffect: mockEffect,
+  }
+})
+
+const mockForm = {
+  setFieldsValue: jest.fn(),
+};
+
 const bookFormViewProps = {
   onSubmit: jest.fn(),
   book: books[0],
-  form: {} as FormInstance,
+  form: mockForm as unknown as FormInstance,
   onReset: jest.fn(),
 };
 
@@ -45,9 +64,12 @@ describe("Books Form View test suite", () => {
   });
 
   it("should reset fields", () => {
-    const { onReset } = bookFormViewProps;
+    const { onReset, form } = bookFormViewProps;
     const component = shallow(<BookFormView {...bookFormViewProps} />);
     const resetBtn = component.find('[htmlType="button"]');
+
+    expect(form.setFieldsValue).toBeCalled();
+
     const { onClick } = resetBtn.props();
     onClick?.({} as React.MouseEvent);
     expect(onReset).toBeCalled();

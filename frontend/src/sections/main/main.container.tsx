@@ -7,7 +7,6 @@ const MainContainer: FC = () => {
     loading,
     books,
     book,
-    getBooks,
     getBookById,
     saveBook,
     deleteBook,
@@ -23,7 +22,6 @@ const MainContainer: FC = () => {
     <MainView
       loading={loading}
       books={books}
-      getBooks={getBooks}
       getBookById={getBookById}
       saveBook={saveBook}
       deleteBook={deleteBook}

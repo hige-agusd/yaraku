@@ -2,10 +2,9 @@ import Table from "antd/lib/table/Table";
 import { FC } from "react";
 import {
   ExtraType,
-  FilterFunction,
+  FilterFn,
   FilterType,
   IBookRecord,
-  IFilter,
   ISortTable,
   PaginatorType,
   SorterType,
@@ -22,7 +21,7 @@ export interface IBooksTableViewProps {
   deleteBook: (id: number) => void;
   loading: boolean;
   setSortBy: (sort: ISortTable) => void;
-  setFilterBy: FilterFunction;
+  setFilterBy: FilterFn;
 }
 const BooksTableView: FC<IBooksTableViewProps> = ({
   books,

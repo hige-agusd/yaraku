@@ -1,14 +1,19 @@
 import Button from "antd/lib/button/button";
 import Input from "antd/lib/input/Input";
 import Space from "antd/lib/space";
-import { FilterDropdownProps, Key } from "antd/lib/table/interface";
-import { ColumnsType } from "antd/lib/table/Table";
+import { ColumnType, FilterDropdownProps, Key } from "antd/lib/table/interface";
 import Icon from "../../components/icon/icon";
-import { IBookRecord, FilterFunction, TColumns, EditFunction, DeleteFunction } from "../../types/types";
+import { IBookRecord, FilterFn, TColumns, EditFn, DeleteFn, ConfirmFn } from "../../types/types";
+
+export interface IColumnRender<T> {
+  value: any;
+  record: T,
+  index: number;
+}
 
 export const rowKeyGetter=(row: IBookRecord) => row.id;
 
-const getColumnSearchProps = (dataIndex: TColumns, setFilterBy: FilterFunction) => ({
+export const getColumnSearchProps = (dataIndex: TColumns, setFilterBy: FilterFn) => ({
   filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: FilterDropdownProps) => (
     <div style={{ padding: 8 }}>
       <Input
@@ -18,7 +23,7 @@ const getColumnSearchProps = (dataIndex: TColumns, setFilterBy: FilterFunction) 
         onPressEnter={() => handleSearch(setFilterBy, selectedKeys, confirm, dataIndex)}
         style={{ marginBottom: 8, display: 'block' }}
       />
-      <Space>
+      <Space size="middle" >
         <Button
           type="primary"
           onClick={() => handleSearch(setFilterBy, selectedKeys, confirm, dataIndex)}
@@ -31,37 +36,24 @@ const getColumnSearchProps = (dataIndex: TColumns, setFilterBy: FilterFunction) 
         <Button onClick={() => handleReset(setFilterBy, clearFilters)} size="small" style={{ width: 90 }}>
           Reset
         </Button>
-        <Button
-          type="link"
-          size="small"
-          onClick={() => {
-            confirm({ closeDropdown: false });
-            setFilterBy({
-              [dataIndex]: selectedKeys[0],
-              // searchedColumn: dataIndex,
-            });
-          }}
-        >
-          Filter
-        </Button>
       </Space>
     </div>
   ),
 });
 
-const handleSearch = (setFilterBy: FilterFunction, selectedKeys: Key[], confirm: Function, dataIndex: TColumns) => {
+export const handleSearch = (setFilterBy: FilterFn, selectedKeys: Key[], confirm: ConfirmFn , dataIndex: TColumns) => {
   confirm();
   setFilterBy({
     [dataIndex]: selectedKeys[0],
   });
 };
 
-const handleReset = (setFilterBy: FilterFunction, clearFilters: (() => void) | undefined) => {
+export const handleReset = (setFilterBy: FilterFn, clearFilters: (() => void) | undefined) => {
   clearFilters?.();
   setFilterBy(null);
 };
 
-export const getColumns = (editBook: EditFunction, deleteBook: DeleteFunction, setFilterBy: FilterFunction) => (
+export const getColumns = (editBook: EditFn, deleteBook: DeleteFn, setFilterBy: FilterFn) => (
   [
     {
       title: 'Title',
@@ -79,14 +71,14 @@ export const getColumns = (editBook: EditFunction, deleteBook: DeleteFunction, s
     },
     {
       title: 'Actions',
-      key: 'action',
-      render: (_: string, row: IBookRecord) => (
+      key: 'actions',
+      render: (record: IBookRecord) => (
         <div className="BooksTable-actionsWrapper">
-          <span onClick={() => editBook(row.id)}><Icon type="faPencil" /></span>
-          <span onClick={() => deleteBook(row.id)}><Icon type="faTrash" /></span>
+          <span onClick={() => editBook(record.id)}><Icon type="faPencil" /></span>
+          <span onClick={() => deleteBook(record.id)}><Icon type="faTrash" /></span>
         </div>
-      ) 
+      )
     }
-  ] as ColumnsType<IBookRecord>
+  ] as ColumnType<IBookRecord>[]
 )
   

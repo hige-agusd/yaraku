@@ -3,3 +3,25 @@
 .App {
   text-align: center;
 }
+
+.ErrorMessage .ant-message-error {
+  display: flex;
+  justify-content: space-between;
+  width: 13rem;
+}
+
+.ErrorMessage .ant-message-error .anticon {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.ErrorMessage .ant-message-error .anticon svg {
+  height: 1.5rem;
+  width: 2rem;
+}
+
+.ErrorMessage-text {
+  margin-top: auto;
+  margin-bottom: auto;
+  text-align: left;
+}

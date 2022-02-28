@@ -2,29 +2,30 @@ import qs from "qs";
 import { useCallback, useEffect, useState } from "react";
 import {
   FileFormat,
-  FilterFunction,
+  FilterFn,
   IBook,
   IBookRecord,
   IFilter,
   ISortTable,
   TColumns,
 } from "../types/types";
-import { mapSortToQueryParam } from "../utils/utils";
+import { mapSortToQueryParam, showError } from "../utils/utils";
 
 const baseUrl = "http://localhost/api/books";
 
 export interface IUseBookReturn {
   loading: boolean;
-  getBooks: () => void;
   getBookById: (id?: number) => void;
   saveBook: (book: IBook) => void;
   deleteBook: (id: number) => void;
   exportBooks: (fileFormat: FileFormat, column?: TColumns) => void;
-  setFilterBy: FilterFunction;
+  setFilterBy: FilterFn;
   setSortBy: (sort: ISortTable) => void;
   books: IBookRecord[];
   book?: IBook;
   error: Error | null;
+  sortBy: ISortTable | null;
+  filterBy: IFilter | null;
 }
 
 const UseBooks = (): IUseBookReturn => {
@@ -40,9 +41,7 @@ const UseBooks = (): IUseBookReturn => {
     const sortParams = qs.stringify(mapSortToQueryParam(sortBy));
     try {
       setLoading(true);
-      const response = await fetch(`${baseUrl}?${filterParams}&${sortParams}`, {
-        mode: "cors",
-      });
+      const response = await fetch(`${baseUrl}?${filterParams}&${sortParams}`);
       setBooks(await response.json());
     } catch (err) {
       setError(err as Error);
@@ -57,8 +56,13 @@ const UseBooks = (): IUseBookReturn => {
     try {
       setLoading(true);
       const response = await fetch(`${baseUrl}/${id}`);
-      const book = await response.json();
-      setBook(book);
+      if (!response.ok) {
+        const err = new Error("Could not retrieve the book");
+        setError(err);
+      } else {
+        const book = await response.json();
+        setBook(book);
+      }
     } catch (err) {
       setError(err as Error);
     } finally {
@@ -69,13 +73,18 @@ const UseBooks = (): IUseBookReturn => {
   const saveBook = async (book: IBook) => {
     try {
       setLoading(true);
-      await fetch(`${baseUrl}`, {
+      const response = await fetch(`${baseUrl}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(book),
       });
+      if (!response.ok) {
+        const err = new Error("Could not save the book");
+        err.stack = JSON.stringify(response);
+        showError(err);
+      }
     } catch (err) {
       setError(err as Error);
     } finally {
@@ -87,7 +96,12 @@ const UseBooks = (): IUseBookReturn => {
   const deleteBook = async (id: number) => {
     try {
       setLoading(true);
-      await fetch(`${baseUrl}/${id}`, { method: "DELETE" });
+      const response = await fetch(`${baseUrl}/${id}`, { method: "DELETE" });
+      if (!response.ok) {
+        const err = new Error("Could not delete the book");
+        err.stack = JSON.stringify(response);
+        showError(err);
+      }
     } catch (err) {
       setError(err as Error);
     } finally {
@@ -107,7 +121,6 @@ const UseBooks = (): IUseBookReturn => {
 
   return {
     loading,
-    getBooks,
     getBookById,
     saveBook,
     deleteBook,
@@ -117,6 +130,8 @@ const UseBooks = (): IUseBookReturn => {
     books,
     book,
     error,
+    sortBy,
+    filterBy,
   };
 };
 

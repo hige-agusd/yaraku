@@ -1,15 +1,25 @@
 import { Button } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import { FC } from "react";
-import { IUseBookReturn } from "../../hooks/useBooks";
-import { IBook } from "../../types/types";
+import { FC, memo } from "react";
+import { FileFormat, FilterFn, IBook, IBookRecord, ISortTable, TColumns } from "../../types/types";
 import BookExportButton from "../book-export-button/book-export-button";
 import BookModal from "../book-modal/book-modal";
 import BooksTableView from "../books-table/books-table.view";
+import ErrorView from "../error/error";
 
 import './main.css';
 
-interface IMainView extends IUseBookReturn {
+export interface IMainView {
+  loading: boolean;
+  getBookById: (id?: number) => void;
+  saveBook: (book: IBook) => void;
+  deleteBook: (id: number) => void;
+  exportBooks: (fileFormat: FileFormat, column?: TColumns) => void;
+  setFilterBy: FilterFn;
+  setSortBy: (sort: ISortTable) => void;
+  books: IBookRecord[];
+  book?: IBook;
+  error: Error | null;
   setModalVisible: (visible: boolean) => void;
   modalVisible: boolean;
 }
@@ -31,7 +41,7 @@ const MainView: FC<IMainView> = ({
 
   const [form] = useForm();
 
-  if (error) return <div>Error: {error}</div>;
+  if (error) return <ErrorView error={error} />;
 
   const addOrEdit = async (id?: number) => {
       await getBookById(id);
@@ -74,4 +84,4 @@ const MainView: FC<IMainView> = ({
   );
 };
 
-export default MainView;
+export default memo(MainView);
