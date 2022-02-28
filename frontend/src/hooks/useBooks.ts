@@ -11,7 +11,8 @@ import {
 } from "../types/types";
 import { mapSortToQueryParam, showError } from "../utils/utils";
 
-const baseUrl = "http://localhost/api/books";
+const baseUrl = "http://hige.myddns.me:3003/api/books";
+// const baseUrl = "http://localhost/api/books";
 
 export interface IUseBookReturn {
   loading: boolean;
