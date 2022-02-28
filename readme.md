@@ -16,3 +16,5 @@ Note that the changes you make to local files will be automatically reflected in
 2. Install dependencies by running `npm install`.
 3. Start the application by running `npm start`.
 4. The app will be visible at `localhost:3000`.
+
+Note: to point the Frontend to the location of the Backend the variable `baseUrl` in the `frontend\src\hooks\useBooks.ts` should be modified accordingly.
